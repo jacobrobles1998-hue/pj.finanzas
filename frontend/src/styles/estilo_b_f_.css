@@ -1,0 +1,32 @@
+/* barrra flotante */
+.navbar-float {
+    position: fixed !important;
+    top: 1rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 50 !important;
+    background: rgba(225, 225, 225, 0.9) !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    padding: 0.5rem 0.75rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    width: max-content !important;
+  }
+
+.navbar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    white-space: nowrap;
+}
