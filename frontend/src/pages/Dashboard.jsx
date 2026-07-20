@@ -28,7 +28,7 @@ function Dashboard() {
     .map(t => ({ categoria: t.categoria, total: Math.abs(t.monto) }))
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div>
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
       {/* Tarjetas de resumen */}

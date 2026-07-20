@@ -10,12 +10,14 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <div className="pt-32 px-6 pb-6">
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/Categorias" element={<Categorias />} />
-        <Route path="/Transacciones" element={<Transacciones />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/categoria" element={<Categorias />} />
+        <Route path="/transacciones" element={<Transacciones />} />
         <Route path="/cuentas" element={<Cuentas />} />
       </Routes>
+      </div>
     </BrowserRouter>
   )
 }

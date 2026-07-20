@@ -1,11 +1,11 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { LayoutDashboard, ArrowLeftRight, Tag, Wallet } from 'lucide-react'
-import '../styles/estilo_b_f_.css'
+import { LayoutDashboard, Tag, ArrowLeftRight, Wallet } from 'lucide-react'
+import '../../styles/estilo_b_f_.css'
 
 const links = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/categoria', label: 'Categoria', icon: Tag },
   { to: '/transacciones', label: 'Transacciones', icon: ArrowLeftRight },
-  { to: '/categorias', label: 'Categoria', icon: Tag },
   { to: '/cuentas', label: 'Cuentas', icon: Wallet },
 ]
 
