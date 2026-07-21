@@ -46,6 +46,7 @@ function Categorias() {
   const crearCategoria = (e) => {
     e.preventDefault()
     if (!nombre.trim()) return
+    
 
     const nueva = {
       id: Date.now(),

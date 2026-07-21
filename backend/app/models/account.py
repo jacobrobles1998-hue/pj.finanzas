@@ -1,13 +1,13 @@
-from sqlalchemy  import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from app.database import Base
 
-class account(Base):
-    __tablename__="accounts"
+class Account(Base):
+    __tablename__ = "accounts"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    nombre= Column(String, nullable=False)
-    tipo = Column(String, nullable=False)
+    nombre = Column(String, nullable=False)
+    # ... tus otros campos ...
 
-    transaction = relationship("transaction", back_populates="account")
+    # CORRECCIÓN AQUÍ: El primer argumento debe ser el nombre de la clase ("Transaction")
+    transactions = relationship("Transaction", back_populates="account")
