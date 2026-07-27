@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Plus, Tag, TrendingUp, TrendingDown, X, ChevronDown, ChevronUp } from 'lucide-react'
+import { cargarDeStorage, guardarEnStorage } from '../utils/storage'
 
 const categoriasIniciales = [
   { id: 1, nombre: 'Ingresos', tipo: 'ingreso' },
@@ -21,12 +22,22 @@ const COP = (n) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n)
 
 function Categorias() {
-  const [categorias, setCategorias] = useState(categoriasIniciales)
-  const [transacciones] = useState(transaccionesEjemplo)
+  const [categorias, setCategorias] = useState(() => cargarDeStorage('finanzas_categorias', categoriasIniciales))
+  const [transacciones, setTransacciones] = useState(() => cargarDeStorage('finanzas_transacciones', transaccionesEjemplo))
   const [mostrarForm, setMostrarForm] = useState(false)
   const [nombre, setNombre] = useState('')
   const [tipo, setTipo] = useState('gasto')
+  const [monto, setMonto] = useState('')
+  const [descripcion, setDescripcion] = useState('')
   const [expandidaId, setExpandidaId] = useState(null)
+
+  useEffect(() => {
+    guardarEnStorage('finanzas_categorias', categorias)
+  }, [categorias])
+
+  useEffect(() => {
+    guardarEnStorage('finanzas_transacciones', transacciones)
+  }, [transacciones])
 
   const gastos = categorias.filter(c => c.tipo === 'gasto')
   const ingresos = categorias.filter(c => c.tipo === 'ingreso')
@@ -46,21 +57,39 @@ function Categorias() {
   const crearCategoria = (e) => {
     e.preventDefault()
     if (!nombre.trim()) return
-    
 
-    const nueva = {
-      id: Date.now(),
+    const nuevaCategoriaId = Date.now()
+
+    const nuevaCategoria = {
+      id: nuevaCategoriaId,
       nombre: nombre.trim(),
       tipo,
     }
-    setCategorias([...categorias, nueva])
+    setCategorias([...categorias, nuevaCategoria])
+
+    const montoNum = parseFloat(monto)
+    if (!isNaN(montoNum) && montoNum > 0) {
+      const signo = tipo === 'gasto' ? -1 : 1
+      const nuevaTransaccion = {
+        id: Date.now() + 1,
+        categoriaId: nuevaCategoriaId,
+        descripcion: descripcion.trim() || nombre.trim(),
+        monto: montoNum * signo,
+        fecha: new Date().toISOString().split('T')[0],
+      }
+      setTransacciones([...transacciones, nuevaTransaccion])
+    }
+
     setNombre('')
     setTipo('gasto')
+    setMonto('')
+    setDescripcion('')
     setMostrarForm(false)
   }
 
   const eliminarCategoria = (id) => {
     setCategorias(categorias.filter(c => c.id !== id))
+    setTransacciones(transacciones.filter(t => t.categoriaId !== id))
   }
 
   const CategoriaItem = ({ cat, color }) => {
@@ -144,6 +173,29 @@ function Categorias() {
               <option value="ingreso">Ingreso</option>
             </select>
           </div>
+
+          <div className="flex gap-3 mb-3">
+            <input
+              type="number"
+              value={monto}
+              onChange={(e) => setMonto(e.target.value)}
+              placeholder="Monto (opcional)"
+              min="0"
+              className="w-40 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="text"
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+              placeholder="Descripción (opcional)"
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <p className="text-xs text-gray-400 mb-3">
+            Si escribes un monto, se registra automáticamente como el primer movimiento de esta categoría.
+          </p>
+
           <div className="flex gap-2">
             <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
               Crear
