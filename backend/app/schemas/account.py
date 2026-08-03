@@ -12,3 +12,4 @@ class AccountOut(AccountBase):
     class Config:
         from_attributes = True
         
+        
